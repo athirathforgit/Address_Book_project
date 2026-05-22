@@ -22,23 +22,23 @@ int main()
         switch(choice)
         {
             case 1:
-                printf("Add Contact selected\n");
+                add_contact();
                 break;
  
             case 2:
-                printf("Search Contact selected\n");
+                search_contact();
                 break;
  
             case 3:
-                printf("Edit Contact selected\n");
+                edit_contact();
                 break;
  
             case 4:
-                printf("Delete Contact selected\n");
+                delete_contact();
                 break;
  
             case 5:
-                printf("List All Contacts selected\n");
+                list_contact();
                 break;
  
             case 6:
