@@ -15,5 +15,4 @@ struct Contact
     char email[EMAIL_LEN];
  
 };
- 
 #endif

@@ -1,10 +1,11 @@
 #include <stdio.h>
-//#include "contact.h"
-//#include "operations.h"
+#include "contact.h"
+#include "operations.h"
 
 int main()
 {
-    int choice;
+    struct Contact contact[MAX_CONTACTS];
+    int choice,count;
  
     while(1)
     {
@@ -18,27 +19,27 @@ int main()
  
         printf("Enter your choice: ");
         scanf("%d", &choice);
- 
+ //here all are declaration
         switch(choice)
         {
             case 1:
-                add_contact();
+                add_contact(contact,&count);
                 break;
  
             case 2:
-                search_contact();
+                search_contact(contact, count);
                 break;
  
             case 3:
-                edit_contact();
+                edit_contact(contact, count);
                 break;
  
             case 4:
-                delete_contact();
+                delete_contact(contact, &count);
                 break;
  
             case 5:
-                list_contact();
+                list_contacts(contact, count);
                 break;
  
             case 6:
