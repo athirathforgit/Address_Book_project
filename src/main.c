@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "contact.h"
-#include "operations.h"
+//#include "contact.h"
+//#include "operations.h"
 
 int main()
 {

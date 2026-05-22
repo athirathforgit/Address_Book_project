@@ -1,9 +1,10 @@
 #include <stdio.h>
-#include "operations.h"
+//#include "operations.h"
  
 void add_contact()
 {
     printf("Add Contact feature coming soon\n");
+    printf("We will add contact here\n");
 }
  
 void search_contact()
