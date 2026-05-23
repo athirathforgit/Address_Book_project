@@ -59,6 +59,11 @@ while(1)
  
 void search_contact(struct Contact contacts[], int count)
 {
+        if(count == 0)
+    {
+        printf("\nNo Contacts Available\n");
+        return;
+    }
     char search_name[NAME_LEN];
     int found = 0;
 
