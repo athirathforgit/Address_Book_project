@@ -6,7 +6,7 @@
 
 
 // Save all contacts into CSV file
-void save_contacts(Contact contacts[], int count)
+void save_contacts(struct Contact contacts[], int count)
 {
     FILE *fp;
 
@@ -35,7 +35,7 @@ void save_contacts(Contact contacts[], int count)
 
 
 // Load contacts from CSV file
-void load_contacts(Contact contacts[], int *count)
+void load_contacts(struct Contact contacts[], int *count)
 {
     FILE *fp;
     char line[200];

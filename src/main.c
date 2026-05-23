@@ -5,7 +5,7 @@
 int main()
 {
     struct Contact contact[MAX_CONTACTS];
-    int choice,count;
+    int choice,count=0;/*count shound be 0 else it  will be storing some garbage value*/
  
     while(1)
     {

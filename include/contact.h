@@ -1,4 +1,4 @@
-/*A header file can be included multiple times indirectly, 
+/*#ifndef is used because a header file can be included multiple times indirectly, 
 and that causes duplicate definitions */
 #ifndef CONTACT_H
 #define CONTACT_H
