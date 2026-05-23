@@ -18,8 +18,15 @@ int main()
         printf("6. Save & Exit\n");
  
         printf("Enter your choice: ");
-        scanf("%d", &choice);
- //here all are declaration
+        if(scanf("%d", &choice) != 1)
+        {
+            printf("Invalid Choice. Please Enter 1-6\n");
+
+            while(getchar() != '\n');
+
+            continue;
+        }
+         //here all are declaration
         switch(choice)
         {
             case 1:
