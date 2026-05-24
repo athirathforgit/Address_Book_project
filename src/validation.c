@@ -23,16 +23,13 @@ int validate_name(char name[])
         {
 
             continue;
-
         }
         else
         {
-
+            
             return 0;
-        
         }
     }
-
     return 1;
 
 }

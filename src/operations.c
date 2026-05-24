@@ -70,6 +70,12 @@ void search_contact(struct Contact contacts[], int count)
     printf("Enter Name to Search: ");
     scanf(" %[^\n]", search_name);
 
+    if(validate_name(search_name) == 0)
+    {
+        printf("\nInvalid Name\n");
+        return;
+    }
+
     for(int i = 0; i < count; i++)
     {
         int same = 1;
@@ -105,11 +111,24 @@ void search_contact(struct Contact contacts[], int count)
  
 void edit_contact(struct Contact contacts[], int count)
 {
+
+    if(count == 0)
+    {
+        printf("\nNo Contacts Available\n");
+        return;
+    }
+
     char search_name[NAME_LEN];
     int found = 0;
 
     printf("Enter Name to Edit: ");
     scanf(" %[^\n]", search_name);
+
+    if(validate_name(search_name) == 0)
+    {
+        printf("\nInvalid Name\n");
+        return;
+    }
 
     for(int i = 0; i < count; i++)
     {
@@ -178,11 +197,24 @@ void edit_contact(struct Contact contacts[], int count)
  
 void delete_contact(struct Contact contacts[], int *count)
 {
+
+    if(*count == 0)
+    {
+        printf("\nNo Contacts Available\n");
+        return;
+    }
+
     char search_name[NAME_LEN];
     int found = 0;
 
     printf("Enter Name to Delete: ");
     scanf(" %[^\n]", search_name);
+
+    if(validate_name(search_name) == 0)
+    {
+        printf("\nInvalid Name\n");
+        return;
+    }
 
     for(int i = 0; i < *count; i++)
     {
