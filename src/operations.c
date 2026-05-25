@@ -252,26 +252,87 @@ void delete_contact(struct Contact contacts[], int *count)
  
 void list_contacts(struct Contact contacts[], int count)
 {
-
     if(count == 0)
     {
-        printf("\n No Contacts Available \n");/*To show if there is no contact available*/
-        return ;
-
+        printf("\nAddress book is empty\n");
+        return;
     }
 
-    printf("\n------ CONTACT LIST ------\n");
+    struct Contact temp;
 
-    for(int i = 0;i < count;i++)
+    /* Bubble Sort */
+    for(int i = 0; i < count - 1; i++)
     {
-        /*here count is 0 but in contact start from 1 so for
-         printing purpose we are adding i+1 */
-        printf("\n Contact %d \n",i + 1);
-        
-        printf("Name   : %s \n",contacts[i].name);
-        printf("Phone  : %s \n",contacts[i].phone);
-        printf("Email  : %s \n",contacts[i].email);
+        for(int j = 0; j < count - i - 1; j++)
+        {
+            int k = 0;
+            int swap_needed = 0;
 
+            while(1)
+            {
+                char ch1 = contacts[j].name[k];
+                char ch2 = contacts[j + 1].name[k];
+
+                /* convert uppercase to lowercase */
+                if(ch1 >= 'A' && ch1 <= 'Z')
+                {
+                    ch1 = ch1 + 32;
+                }
+
+                if(ch2 >= 'A' && ch2 <= 'Z')
+                {
+                    ch2 = ch2 + 32;
+                }
+
+                if(ch1 > ch2)
+                {
+                    swap_needed = 1;
+                    break;
+                }
+
+                else if(ch1 < ch2)
+                {
+                    break;
+                }
+
+                else if(ch1 == '\0' && ch2 == '\0')
+                {
+                    break;
+                }
+
+                k++;
+            }
+
+            if(swap_needed)
+            {
+                temp = contacts[j];
+                contacts[j] = contacts[j + 1];
+                contacts[j + 1] = temp;
+            }
+        }
     }
 
+    /* Table Header */
+    printf("\n+----+------------------+------------+----------------------+\n");
+
+    printf("| %-2s | %-16s | %-10s | %-20s |\n","#", "Name", "Phone", "Email");
+
+    printf("+----+------------------+------------+----------------------+\n");
+
+    /* Print Contacts */
+    for(int i = 0; i < count; i++)
+    {
+        printf("| %-2d | %-20s | %-13s | %-28s |\n",
+               i + 1,
+               contacts[i].name,
+               contacts[i].phone,
+               contacts[i].email);
+    }
+
+    /* Footer Line */
+    printf("+----+----------------------+---------------+------------------------------+\n");
+
+    printf("Total contacts: %d / %d\n",
+           count,
+           MAX_CONTACTS);
 }

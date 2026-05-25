@@ -1,9 +1,17 @@
 #include <stdio.h>     // file handling functions
 #include <string.h>    // string functions
-
+#include <stdlib.h>     //for using qsort
 #include "contact.h"       // Contact structure
 #include "file_handler.h"  // function declarations
 
+int compare_contacts(const void *a, const void *b)
+{
+    struct Contact *c1 = (struct Contact *)a;
+
+    struct Contact *c2 = (struct Contact *)b;
+
+    return strcmp(c1->name, c2->name);
+}
 
 // Save all contacts into CSV file
 void save_contacts(struct Contact contacts[], int count)
@@ -68,7 +76,11 @@ void load_contacts(struct Contact contacts[], int *count)
                printf("LOADED : %s\n",contacts[*count].name);
 
         (*count)++;
+
     }
+    // Sort contacts alphabetically
+    qsort(contacts,*count,sizeof(struct Contact),compare_contacts);
+
 
     fclose(fp);
 }
