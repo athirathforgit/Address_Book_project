@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include<string.h>
 #include "operations.h"
 #include "validation.h"
  
@@ -56,45 +57,40 @@ while(1)
 
      printf("\n Contact Added Successfully \n");
 }
- 
 void search_contact(struct Contact contacts[], int count)
 {
-        if(count == 0)
+    if(count == 0)
     {
         printf("\nNo Contacts Available\n");
+
         return;
     }
+
     char search_name[NAME_LEN];
+
     int found = 0;
 
     printf("Enter Name to Search: ");
+
     scanf(" %[^\n]", search_name);
 
     if(validate_name(search_name) == 0)
     {
         printf("\nInvalid Name\n");
+
         return;
     }
 
     for(int i = 0; i < count; i++)
     {
-        int same = 1;
-
-        for(int j = 0; search_name[j] != '\0' || contacts[i].name[j] != '\0';j++)
-        {
-            if(search_name[j] != contacts[i].name[j])
-            {
-                same = 0;
-                break;
-            }
-        }
-
-        if(same)
+        if(strstr(contacts[i].name, search_name))
         {
             printf("\nContact Found\n");
 
             printf("Name   : %s\n", contacts[i].name);
+
             printf("Phone  : %s\n", contacts[i].phone);
+
             printf("Email  : %s\n", contacts[i].email);
 
             found = 1;
@@ -108,7 +104,6 @@ void search_contact(struct Contact contacts[], int count)
         printf("\nContact Not Found\n");
     }
 }
- 
 void edit_contact(struct Contact contacts[], int count)
 {
 

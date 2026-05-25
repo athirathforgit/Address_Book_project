@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include "contact.h"
 #include "operations.h"
+#include "file_handler.h"
 
 int main()
 {
-    struct Contact contact[MAX_CONTACTS];
+    struct Contact contacts[MAX_CONTACTS];
     int choice,count=0;/*count shound be 0 else it  will be storing some garbage value*/
  
     while(1)
@@ -30,30 +31,37 @@ int main()
         switch(choice)
         {
             case 1:
-                add_contact(contact,&count);
+                add_contact(contacts,&count);
                 break;
  
             case 2:
-                search_contact(contact, count);
+                search_contact(contacts, count);
                 break;
  
             case 3:
-                edit_contact(contact, count);
+                edit_contact(contacts, count);
                 break;
  
             case 4:
-                delete_contact(contact, &count);
+                delete_contact(contacts, &count);
                 break;
  
             case 5:
-                list_contacts(contact, count);
+                list_contacts(contacts, count);
                 break;
  
-            case 6:
+             case 6:
+
+                save_contacts(contacts, count);
+
+                printf("Contacts Saved Successfully\n");
+
                 printf("Exiting...\n");
+
                 return 0;
- 
+
             default:
+
                 printf("Invalid choice\n");
         }
     }
