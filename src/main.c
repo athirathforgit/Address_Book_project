@@ -7,7 +7,8 @@ int main()
 {
     struct Contact contacts[MAX_CONTACTS];
     int choice,count=0;/*count shound be 0 else it  will be storing some garbage value*/
- 
+    load_contacts(contacts, &count);
+    
     while(1)
     {
         printf("\nADDRESS BOOK MENU\n");
@@ -63,6 +64,7 @@ int main()
             default:
 
                 printf("Invalid choice\n");
+
         }
     }
 }

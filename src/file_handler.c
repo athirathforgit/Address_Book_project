@@ -37,9 +37,11 @@ void save_contacts(struct Contact contacts[], int count)
 // Load contacts from CSV file
 void load_contacts(struct Contact contacts[], int *count)
 {
+  
     FILE *fp;
     char line[200];
 
+    printf("Loaded Contacts...\n");
     fp = fopen("data/contacts.csv", "r");
 
     // If file doesn't exist
@@ -62,6 +64,8 @@ void load_contacts(struct Contact contacts[], int *count)
                contacts[*count].name,
                contacts[*count].phone,
                contacts[*count].email);
+
+               printf("LOADED : %s\n",contacts[*count].name);
 
         (*count)++;
     }
