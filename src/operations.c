@@ -97,13 +97,14 @@ void search_contact(struct Contact contacts[], int count)
         return;
     }
 
-    char search_name[NAME_LEN];
+    char search_data[50];
 
     int found = 0;
 
-    printf("Enter Name to Search: ");
+    printf("Enter Name / Phone / Email to Search: ");
 
-    scanf(" %[^\n]", search_name);
+    scanf(" %[^\n]", search_data);
+
 
     /* Validate search input */
     if (validate_name(search_name) == 0)
@@ -117,6 +118,16 @@ void search_contact(struct Contact contacts[], int count)
     for (int i = 0; i < count; i++)
     {
         if (strstr(contacts[i].name, search_name))
+
+    /* Search in all fields */
+    for(int i = 0; i < count; i++)
+    {
+        if(strstr(contacts[i].name, search_data) ||
+
+           strstr(contacts[i].phone, search_data) ||
+
+           strstr(contacts[i].email, search_data))
+
         {
             printf("\nContact Found\n");
 
@@ -127,19 +138,26 @@ void search_contact(struct Contact contacts[], int count)
             printf("Email  : %s\n", contacts[i].email);
 
             found = 1;
-
-            break;
         }
     }
 
+
     /* Display message if contact not found */
     if (found == 0)
+
+    /* If nothing matched */
+    if(found == 0)
+
     {
         printf("\nContact Not Found\n");
     }
 }
 
+
 /*
+
+/* 
+>>>>>>> ad660fb (editing and searching changed)
    Edits existing contact details
 
    Parameters:
@@ -156,26 +174,56 @@ void edit_contact(struct Contact contacts[], int count)
         return;
     }
 
-    char search_name[NAME_LEN];
+    char search_data[50];
 
-    int found = 0;
+    int matched_indexes[MAX_CONTACTS];
 
-    printf("Enter Name to Edit: ");
+    int match_count = 0;
 
-    scanf(" %[^\n]", search_name);
+    printf("Enter Name / Phone / Email to Edit: ");
+
 
     /* Validate search name */
     if (validate_name(search_name) == 0)
+
+    scanf(" %[^\n]", search_data);
+
+    /* Search matching contacts */
+    for(int i = 0; i < count; i++)
+
     {
-        printf("\nInvalid Name\n");
+        if(strstr(contacts[i].name, search_data) ||
+
+           strstr(contacts[i].phone, search_data) ||
+
+           strstr(contacts[i].email, search_data))
+        {
+            matched_indexes[match_count] = i;
+
+            match_count++;
+        }
+    }
+
+    /* No matching contact found */
+    if(match_count == 0)
+    {
+        printf("\nContact Not Found\n");
 
         return;
     }
 
+
     /* Search for matching contact */
     for (int i = 0; i < count; i++)
+
+    /* Display matching contacts */
+    printf("\nMatching Contacts:\n");
+
+    for(int i = 0; i < match_count; i++)
+
     {
-        int same = 1;
+        int index = matched_indexes[i];
+
 
         /* Manual string comparison */
         for (int j = 0;
@@ -186,14 +234,83 @@ void edit_contact(struct Contact contacts[], int count)
             {
                 same = 0;
 
-                break;
-            }
+        printf("\n%d.\n", i + 1);
+
+        printf("Name   : %s\n", contacts[index].name);
+
+        printf("Phone  : %s\n", contacts[index].phone);
+
+        printf("Email  : %s\n", contacts[index].email);
+    }
+
+    int choice;
+
+    printf("\nEnter List Number to Edit: ");
+
+    scanf("%d", &choice);
+
+    /* Validate choice */
+    if(choice < 1 || choice > match_count)
+    {
+        printf("\nInvalid Choice\n");
+
+        return;
+    }
+
+    /* Get selected contact index */
+    int selected_index = matched_indexes[choice - 1];
+
+    int edit_choice;
+
+    /* Edit menu */
+    printf("\nWhat Do You Want To Edit?\n");
+
+    printf("1. Name\n");
+
+    printf("2. Phone\n");
+
+    printf("3. Email\n");
+
+    printf("4. All Details\n");
+
+    printf("Enter Your Choice: ");
+
+    scanf("%d", &edit_choice);
+
+    /* Edit Name Only */
+    if(edit_choice == 1)
+    {
+        printf("\nEnter New Name: ");
+
+        scanf(" %[^\n]", contacts[selected_index].name);
+
+        while(!validate_name(contacts[selected_index].name))
+        {
+            printf("Invalid Name\n");
+
+
+            printf("Enter New Name: ");
+
+            scanf(" %[^\n]", contacts[selected_index].name);
         }
+    }
+
 
         /* If contact found */
         if (same)
+
+    /* Edit Phone Only */
+    else if(edit_choice == 2)
+    {
+        printf("\nEnter New Phone: ");
+
+        scanf(" %[^\n]", contacts[selected_index].phone);
+
+        while(!validate_phone(contacts[selected_index].phone))
+
         {
-            found = 1;
+            printf("Invalid Phone Number\n");
+
 
             /* Read and validate new name */
             printf("\nEnter New Name: ");
@@ -245,9 +362,82 @@ void edit_contact(struct Contact contacts[], int count)
 
     /* Display message if contact not found */
     if (found == 0)
-    {
-        printf("\nContact Not Found\n");
+=======
+            printf("Enter New Phone: ");
+
+            scanf(" %[^\n]", contacts[selected_index].phone);
+        }
     }
+
+    /* Edit Email Only */
+    else if(edit_choice == 3)
+>>>>>>> ad660fb (editing and searching changed)
+    {
+        printf("\nEnter New Email: ");
+
+        scanf(" %[^\n]", contacts[selected_index].email);
+
+        while(!validate_email(contacts[selected_index].email))
+        {
+            printf("Invalid Email\n");
+
+            printf("Enter New Email: ");
+
+            scanf(" %[^\n]", contacts[selected_index].email);
+        }
+    }
+
+    /* Edit All Details */
+    else if(edit_choice == 4)
+    {
+        printf("\nEnter New Name: ");
+
+        scanf(" %[^\n]", contacts[selected_index].name);
+
+        while(!validate_name(contacts[selected_index].name))
+        {
+            printf("Invalid Name\n");
+
+            printf("Enter New Name: ");
+
+            scanf(" %[^\n]", contacts[selected_index].name);
+        }
+
+        printf("Enter New Phone: ");
+
+        scanf(" %[^\n]", contacts[selected_index].phone);
+
+        while(!validate_phone(contacts[selected_index].phone))
+        {
+            printf("Invalid Phone Number\n");
+
+            printf("Enter New Phone: ");
+
+            scanf(" %[^\n]", contacts[selected_index].phone);
+        }
+
+        printf("Enter New Email: ");
+
+        scanf(" %[^\n]", contacts[selected_index].email);
+
+        while(!validate_email(contacts[selected_index].email))
+        {
+            printf("Invalid Email\n");
+
+            printf("Enter New Email: ");
+
+            scanf(" %[^\n]", contacts[selected_index].email);
+        }
+    }
+
+    else
+    {
+        printf("\nInvalid Edit Choice\n");
+
+        return;
+    }
+
+    printf("\nContact Updated Successfully\n");
 }
 
 /*
@@ -345,7 +535,8 @@ void list_contacts(struct Contact contacts[], int count)
         return;
     }
 
-    struct Contact temp;
+    // struct Contact temp;
+
 
     /*
        Bubble sort contacts alphabetically
@@ -357,13 +548,30 @@ void list_contacts(struct Contact contacts[], int count)
         {
             int k = 0;
 
-            int swap_needed = 0;
+    // /* 
+    //    Bubble sort contacts alphabetically
+    //    based on contact name
+    // */
+    // for(int i = 0; i < count - 1; i++)
+    // {
+    //     for(int j = 0; j < count - i - 1; j++)
+    //     {
+    //         int k = 0;
+
+
+    //         int swap_needed = 0;
 
             while (1)
             {
                 char ch1 = contacts[j].name[k];
 
-                char ch2 = contacts[j + 1].name[k];
+    //         while(1)
+    //         {
+    //             char ch1 = contacts[j].name[k];
+>>>>>>> ad660fb (editing and searching changed)
+
+    //             char ch2 = contacts[j + 1].name[k];
+
 
                 /* Convert uppercase to lowercase */
                 if (ch1 >= 'A' && ch1 <= 'Z')
@@ -381,8 +589,26 @@ void list_contacts(struct Contact contacts[], int count)
                 {
                     swap_needed = 1;
 
-                    break;
-                }
+    //             /* Convert uppercase to lowercase */
+    //             if(ch1 >= 'A' && ch1 <= 'Z')
+    //             {
+    //                 ch1 = ch1 + 32;
+    //             }
+
+    //             if(ch2 >= 'A' && ch2 <= 'Z')
+    //             {
+    //                 ch2 = ch2 + 32;
+    //             }
+
+    //             /* Decide whether swapping is needed */
+    //             if(ch1 > ch2)
+    //             {
+    //                 swap_needed = 1;
+
+
+    //                 break;
+    //             }
+
 
                 else if (ch1 < ch2)
                 {
@@ -395,20 +621,39 @@ void list_contacts(struct Contact contacts[], int count)
                     break;
                 }
 
-                k++;
-            }
+    //             else if(ch1 < ch2)
+    //             {
+    //                 break;
+    //             }
+
+    //             /* Stop comparison at end of both strings */
+    //             else if(ch1 == '\0' && ch2 == '\0')
+    //             {
+    //                 break;
+    //             }
+
+
+    //             k++;
+    //         }
+
 
             /* Swap contacts if required */
             if (swap_needed)
             {
                 temp = contacts[j];
 
-                contacts[j] = contacts[j + 1];
+    //         /* Swap contacts if required */
+    //         if(swap_needed)
+    //         {
+    //             temp = contacts[j];
 
-                contacts[j + 1] = temp;
-            }
-        }
-    }
+
+    //             contacts[j] = contacts[j + 1];
+
+    //             contacts[j + 1] = temp;
+    //         }
+    //     }
+    // }
 
     /* Print table header */
     printf("\n+----+------------------+------------+----------------------+\n");
