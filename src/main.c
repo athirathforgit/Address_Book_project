@@ -24,8 +24,8 @@ int main()
     */
     int choice, count = 0;
 
-    /* Load contacts from CSV file into memory */
-    load_contacts(contacts, &count);
+    /* Load contacts from CSV file into memory(file_handler.c) */
+   load_contacts(contacts, &count);
 
     /* Infinite loop for menu-driven program */
     while (1)

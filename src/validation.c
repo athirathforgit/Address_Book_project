@@ -144,3 +144,52 @@ int validate_email(char email[])
     /* Invalid email */
     return 0;
 }
+/* 
+   Checks whether phone number already exists
+
+   Returns:
+   1 -> Duplicate Found
+   0 -> Unique Number
+*/
+int duplicate_phone(struct Contact contacts[],
+                    int count,
+                    char phone[])
+{
+    /* Check all existing contacts */
+    for(int i = 0; i < count; i++)
+    {
+        /* Compare phone numbers */
+        if(strcmp(contacts[i].phone, phone) == 0)
+        {
+            return 1;
+        }
+    }
+
+    /* No duplicate found */
+    return 0;
+}
+
+/* 
+   Checks whether email already exists
+
+   Returns:
+   1 -> Duplicate Found
+   0 -> Unique Email
+*/
+int duplicate_email(struct Contact contacts[],
+                    int count,
+                    char email[])
+{
+    /* Check all existing contacts */
+    for(int i = 0; i < count; i++)
+    {
+        /* Compare email addresses */
+        if(strcmp(contacts[i].email, email) == 0)
+        {
+            return 1;
+        }
+    }
+
+    /* No duplicate found */
+    return 0;
+}

@@ -32,31 +32,57 @@ void add_contact(struct Contact contacts[], int *count)
         printf("Invalid Name\n");
     }
 
-    while (1)
+   while(1)
     {
         printf("Enter Phone: ");
+
         scanf(" %[^\n]", contacts[*count].phone);
 
-        if (validate_phone(contacts[*count].phone))
-            break;
+        if(validate_phone(contacts[*count].phone) &&
 
-        printf("Invalid Phone Number\n");
+        !duplicate_phone(contacts,*count,contacts[*count].phone))
+        {
+            break;
+        }
+
+        if(duplicate_phone(contacts,*count,contacts[*count].phone))
+        {
+            printf("Phone Number Already Exists\n");
+        }
+
+        else
+        {
+            printf("Invalid Phone Number\n");
+        }
     }
 
-    while (1)
+    while(1)
     {
         printf("Enter Email: ");
+
         scanf(" %[^\n]", contacts[*count].email);
 
-        if (validate_email(contacts[*count].email))
+        if(validate_email(contacts[*count].email) &&
+
+        !duplicate_email(contacts,
+                            *count,
+                            contacts[*count].email))
+        {
             break;
+        }
 
-        printf("Invalid Email\n");
+        if(duplicate_email(contacts,
+                        *count,
+                        contacts[*count].email))
+        {
+            printf("Email Already Exists\n");
+        }
+
+        else
+        {
+            printf("Invalid Email\n");
+        }
     }
-
-    (*count)++;
-
-    printf("\nContact Added Successfully\n");
 }
 
 /*
@@ -228,25 +254,61 @@ void edit_contact(struct Contact contacts[], int count)
         printf("Enter New Phone: ");
         scanf(" %[^\n]", contacts[selected_index].phone);
 
-        while (!validate_phone(contacts[selected_index].phone))
+    while(1)
+    {
+        if(validate_phone(contacts[selected_index].phone) &&
+
+        !duplicate_phone(contacts,
+                            count,
+                            contacts[selected_index].phone))
+        {
+            break;
+        }
+
+        if(duplicate_phone(contacts,
+                        count,
+                        contacts[selected_index].phone))
+        {
+            printf("Phone Number Already Exists\n");
+        }
+
+        else
         {
             printf("Invalid Phone Number\n");
-
-            printf("Enter New Phone: ");
-            scanf(" %[^\n]", contacts[selected_index].phone);
         }
+
+        printf("Enter New Phone: ");
+
+        scanf(" %[^\n]", contacts[selected_index].phone);
+    }
 
         printf("Enter New Email: ");
         scanf(" %[^\n]", contacts[selected_index].email);
 
-        while (!validate_email(contacts[selected_index].email))
+    while(1)
+    {
+        if(validate_email(contacts[selected_index].email) &&
+
+        !duplicate_email(contacts,count,contacts[selected_index].email))
+        {
+            break;
+        }
+
+        if(duplicate_email(contacts,count,contacts[selected_index].email))
+        {
+            printf("Email Already Exists\n");
+        }
+
+        else
         {
             printf("Invalid Email\n");
-
-            printf("Enter New Email: ");
-            scanf(" %[^\n]", contacts[selected_index].email);
         }
+
+        printf("Enter New Email: ");
+
+        scanf(" %[^\n]", contacts[selected_index].email);
     }
+}
 
     else
     {
