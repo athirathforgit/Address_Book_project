@@ -568,7 +568,7 @@ void list_contacts(struct Contact contacts[], int count)
     //         while(1)
     //         {
     //             char ch1 = contacts[j].name[k];
->>>>>>> ad660fb (editing and searching changed)
+
 
     //             char ch2 = contacts[j + 1].name[k];
 
@@ -585,7 +585,7 @@ void list_contacts(struct Contact contacts[], int count)
                 }
 
                 /* Decide whether swapping is needed */
-                if (ch1 > ch2)
+               // if (ch1 > ch2)
                 {
                     swap_needed = 1;
 
