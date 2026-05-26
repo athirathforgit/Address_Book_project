@@ -14,8 +14,7 @@
 /* Contains file handling function declarations */
 #include "file_handler.h"
 
-
-/* 
+/*
    Comparison function used by qsort()
 
    Compares contact names alphabetically
@@ -33,8 +32,7 @@ int compare_contacts(const void *a, const void *b)
     return strcmp(c1->name, c2->name);
 }
 
-
-/* 
+/*
    Saves all contacts into CSV file
 
    Parameters:
@@ -49,14 +47,14 @@ void save_contacts(struct Contact contacts[], int count)
     fp = fopen("data/contacts.csv", "w");
 
     /* Check whether file opened successfully */
-    if(fp == NULL)
+    if (fp == NULL)
     {
         printf("Unable to open file\n");
         return;
     }
 
     /* Write each contact into CSV file */
-    for(int i = 0; i < count; i++)
+    for (int i = 0; i < count; i++)
     {
         fprintf(fp,
                 "%s,%s,%s\n",
@@ -69,8 +67,7 @@ void save_contacts(struct Contact contacts[], int count)
     fclose(fp);
 }
 
-
-/* 
+/*
    Loads contacts from CSV file into memory
 
    Parameters:
@@ -90,7 +87,7 @@ void load_contacts(struct Contact contacts[], int *count)
     fp = fopen("data/contacts.csv", "r");
 
     /* If file does not exist, return */
-    if(fp == NULL)
+    if (fp == NULL)
     {
         return;
     }
@@ -99,12 +96,12 @@ void load_contacts(struct Contact contacts[], int *count)
     *count = 0;
 
     /* Read file line by line */
-    while(fgets(line, sizeof(line), fp))
+    while (fgets(line, sizeof(line), fp))
     {
         /* Remove newline character from line */
         line[strcspn(line, "\n")] = '\0';
 
-        /* 
+        /*
            Extract CSV values and store into structure
 
            %49[^,]  -> reads name until comma

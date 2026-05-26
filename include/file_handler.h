@@ -29,7 +29,7 @@ void save_contacts(struct Contact contacts[], int count);
 /*
    Loads contacts from file into memory.
 
-   Parameters:
+   - Parameters:
    - contacts : Array where contacts will be stored
    - count    : Pointer used to update total contacts loaded
 */

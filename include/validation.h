@@ -1,4 +1,4 @@
-/* 
+/*
    VALIDATION_H
 
    Contains function declarations used for
@@ -29,12 +29,12 @@ int validate_email(char email[]);
 
 /* Checks whether phone number already exists */
 int duplicate_phone(struct Contact contacts[],
-    int count,
-    char phone[]);
+                    int count,
+                    char phone[]);
 
 /* Checks whether email already exists */
 int duplicate_email(struct Contact contacts[],
-    int count,
-    char email[]);
+                    int count,
+                    char email[]);
 
 #endif

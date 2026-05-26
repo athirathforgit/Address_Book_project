@@ -1,4 +1,4 @@
-/* 
+/*
    CONTACT_H
 
    This header file contains:
@@ -25,7 +25,7 @@
 /* Maximum size for storing email address */
 #define EMAIL_LEN 50
 
-/* 
+/*
    Structure to store a single contact
 
    Each contact contains:
@@ -35,9 +35,9 @@
 */
 struct Contact
 {
-    char name[NAME_LEN]; /* Stores contact name */
-    char phone[PHONE_LEN]; /* Stores phone number */
-    char email[EMAIL_LEN]; /* Stores email address */
+   char name[NAME_LEN];   /* Stores contact name */
+   char phone[PHONE_LEN]; /* Stores phone number */
+   char email[EMAIL_LEN]; /* Stores email address */
 };
 
 #endif
