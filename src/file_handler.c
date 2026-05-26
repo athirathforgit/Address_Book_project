@@ -23,14 +23,7 @@
    - positive value if c1 > c2
    - 0 if both are equal
 */
-int compare_contacts(const void *a, const void *b)
-{
-    struct Contact *c1 = (struct Contact *)a;
 
-    struct Contact *c2 = (struct Contact *)b;
-
-    return strcmp(c1->name, c2->name);
-}
 
 /*
    Saves all contacts into CSV file
@@ -122,11 +115,7 @@ void load_contacts(struct Contact contacts[], int *count)
     }
 
     /* Sort contacts alphabetically after loading */
-    qsort(contacts,
-          *count,
-          sizeof(struct Contact),
-          compare_contacts);
-
+    
     /* Close file after reading */
     fclose(fp);
 }
