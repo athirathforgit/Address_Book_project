@@ -75,7 +75,7 @@ int main()
 
         /* Search existing contact */
         case 2:
-            search_contact(contacts, count);
+            search_contact_display(contacts, count);
             break;
 
         /* Edit contact details */

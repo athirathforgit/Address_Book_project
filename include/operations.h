@@ -12,7 +12,13 @@
 void add_contact(struct Contact contacts[], int *count);
 
 /* Searches for a contact using name */
-void search_contact(struct Contact contacts[], int count);
+int search_contact(struct Contact contacts[],
+                   int count,
+                   char search_data[],
+                   int matched_indexes[]);
+                   
+void search_contact_display(struct Contact contacts[],
+                            int count);
 
 /* Edits existing contact details */
 void edit_contact(struct Contact contacts[], int count);

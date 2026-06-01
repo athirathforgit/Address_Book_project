@@ -147,7 +147,72 @@ int search_contact(struct Contact contacts[],
     /* Return total matches found */
     return match_count;
 }
+/*
+   Displays contacts matching the search text.
 
+   Steps:
+   1. Accept search text from user.
+   2. Call search_contact() helper function.
+   3. Helper function returns total matches found
+      and stores matching contact indexes in
+      matched_indexes[].
+   4. Display all matching contacts.
+*/
+void search_contact_display(struct Contact contacts[],
+                            int count)
+{
+    /* Stores search text entered by user */
+    char search_data[50];
+
+    /* Stores indexes of matching contacts */
+    int matched_indexes[MAX_CONTACTS];
+
+    /* Accept search text from user */
+    printf("Enter Name / Phone / Email to Search: ");
+    scanf(" %[^\n]", search_data);
+
+    /*
+       Search contacts using helper function.
+
+       Returns:
+       Total matching contacts found.
+
+       Also stores matching contact indexes
+       inside matched_indexes[].
+    */
+    int match_count = search_contact(
+                        contacts,
+                        count,
+                        search_data,
+                        matched_indexes);
+
+    /* No matching contact found */
+    if(match_count == 0)
+    {
+        printf("\nContact Not Found\n");
+        return;
+    }
+
+    /* Display heading */
+    printf("\nMatching Contacts:\n");
+
+    /* Display all matching contacts */
+    for(int i = 0; i < match_count; i++)
+    {
+        /*
+           Retrieve actual contact index
+           from matched_indexes[].
+        */
+        int index = matched_indexes[i];
+
+        printf("\nContact Found\n");
+
+        /* Display contact details */
+        printf("Name   : %s\n", contacts[index].name);
+        printf("Phone  : %s\n", contacts[index].phone);
+        printf("Email  : %s\n", contacts[index].email);
+    }
+}
 void edit_contact(struct Contact contacts[], int count)
 {
     /* Check whether any contacts exist */
