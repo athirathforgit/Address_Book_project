@@ -15,17 +15,6 @@
 #include "file_handler.h"
 
 /*
-   Comparison function used by qsort()
-
-   Compares contact names alphabetically
-   and returns:
-   - negative value if c1 < c2
-   - positive value if c1 > c2
-   - 0 if both are equal
-*/
-
-
-/*
    Saves all contacts into CSV file
 
    Parameters:
