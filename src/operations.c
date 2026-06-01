@@ -106,78 +106,31 @@ void add_contact(struct Contact contacts[], int *count)
 /*
    Searches for a contact
 */
-void search_contact(struct Contact contacts[], int count)
-{
-    /* Check whether contact list is empty */
-    if (count == 0)
-    {
-        printf("\nNo Contacts Available\n");
-        return;
-    }
- 
-    /* Variable to store search key entered by user */
-    char search_data[50];
- 
-    /* Flag variable to track whether match is found */
-    int found = 0;
- 
-    /* Read search input from user */
-    printf("Enter Name / Phone / Email to Search: ");
-    scanf(" %[^\n]", search_data);
- 
-    /* Traverse through all contacts */
-    for (int i = 0; i < count; i++)
-    {
-        /* Check whether search text exists in
-           name, phone number or email */
-        if (strstr(contacts[i].name, search_data) ||
-            strstr(contacts[i].phone, search_data) ||
-            strstr(contacts[i].email, search_data))
-        {
-            /* Display contact found message */
-            printf("\nContact Found\n");
- 
-            /* Display matched contact details */
-            printf("Name   : %s\n", contacts[i].name);
-            printf("Phone  : %s\n", contacts[i].phone);
-            printf("Email  : %s\n", contacts[i].email);
- 
-            /* Update flag to indicate match found */
-            found = 1;
-        }
-    }
- 
-    /* Display message if no matching contact exists */
-    if (found == 0)
-    {
-        printf("\nContact Not Found\n");
-    }
-}
 /*
-   Edits existing contact details
-*/
-/*
-   Searches all contacts and stores
-   matching contact indexes.
+   Searches contacts using name, phone
+   or email.
+
+   If a match is found, the contact's
+   index is stored in matched_indexes[].
 
    Returns:
-   Total number of matches found.
+   Total number of matching contacts found.
 */
-int find_matches(struct Contact contacts[],
-                 int count,
-                 char search_data[],
-                 int matched_indexes[])
+int search_contact(struct Contact contacts[],
+                   int count,
+                   char search_data[],
+                   int matched_indexes[])
 {
-    /* Stores total matching contacts found */
+    /* Stores total matches found */
     int match_count = 0;
 
-    /* Check every contact in the contact list */
+    /* Check all contacts */
     for(int i = 0; i < count; i++)
     {
         /*
-           strstr() returns a non-NULL address
-           if search_data is found inside
-           name, phone or email.
+           strstr() returns non-NULL if
+           search_data exists in name,
+           phone or email.
         */
         if(strstr(contacts[i].name, search_data) ||
            strstr(contacts[i].phone, search_data) ||
@@ -186,14 +139,15 @@ int find_matches(struct Contact contacts[],
             /* Store matching contact index */
             matched_indexes[match_count] = i;
 
-            /* Increase total matches found */
+            /* Increase match count */
             match_count++;
         }
     }
 
-    /* Return total matching contacts */
+    /* Return total matches found */
     return match_count;
 }
+
 void edit_contact(struct Contact contacts[], int count)
 {
     /* Check whether any contacts exist */
@@ -217,7 +171,7 @@ void edit_contact(struct Contact contacts[], int count)
    scanf(" %[^\n]", search_data);
 
    /* Find all matching contacts */
-   match_count = find_matches(
+   match_count = search_contact(
                 contacts,
                 count,
                 search_data,
@@ -417,73 +371,68 @@ void delete_contact(struct Contact contacts[], int *count)
         return;
     }
 
-    /* Stores name entered by user for deletion */
+    /* Stores name entered by user */
     char search_name[NAME_LEN];
 
-    /* Indicates whether contact was found */
-    int found = 0;//here 0 means not found
+    /* Stores indexes of matching contacts */
+    int matched_indexes[MAX_CONTACTS];
+
+    /* Total matching contacts found */
+    int match_count;
 
     /* Accept contact name from user */
     printf("Enter Name to Delete: ");
     scanf(" %[^\n]", search_name);
 
     /* Validate entered name */
-    if (validate_name(search_name) == 0)
+    if(validate_name(search_name) == 0)
     {
         printf("\nInvalid Name\n");
         return;
     }
 
     /*
-       Search all contacts.
+       Search contact using helper function.
 
-       If matching contact is found,
-       delete it from the contact list.
+       Matching contact indexes are stored
+       inside matched_indexes[].
     */
-    for (int i = 0; i < *count; i++)
-    {
-        /* Compare entered name with contact name */
-        if (strcmp(search_name, contacts[i].name) == 0)
-        {
-            /* Contact found successfully */
-            found = 1;
+    match_count = search_contact(
+                    contacts,
+                    *count,
+                    search_name,
+                    matched_indexes);
 
-            /*
-               Shift all contacts after the deleted
-               contact one position to the left.
-
-               Example:
-
-               Before:
-               [Ravi] [Muskaan] [Asha]
-
-               Delete Muskaan
-
-               After Shift:
-               [Ravi] [Asha]
-            */
-            for (int k = i; k < *count - 1; k++)
-            {
-                contacts[k] = contacts[k + 1];
-            }
-
-            /* Reduce total contact count */
-            (*count)--;
-
-            printf("\nContact Deleted Successfully\n");
-
-            /* No further searching required */
-            break;
-        }
-    }
-
-    /* Display message if contact not found */
-    if (found == 0)
+    /* No matching contact found */
+    if(match_count == 0)
     {
         printf("\nContact Not Found\n");
+        return;
     }
-}
 
+    /*
+       Retrieve actual contact index.
+
+       For delete operation, first match
+       is selected.
+    */
+    int index = matched_indexes[0];
+
+    /*
+       Shift all contacts after the deleted
+       contact one position to the left.
+    */
+    for(int k = index; k < *count - 1; k++)
+    {
+        contacts[k] = contacts[k + 1];
+    }
+
+    /* Reduce total contact count */
+    (*count)--;
+
+    printf("\nContact Deleted Successfully\n");
+}
+  
 /*
    Displays all contacts
 */
