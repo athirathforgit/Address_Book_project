@@ -156,7 +156,44 @@ void search_contact(struct Contact contacts[], int count)
 /*
    Edits existing contact details
 */
+/*
+   Searches all contacts and stores
+   matching contact indexes.
 
+   Returns:
+   Total number of matches found.
+*/
+int find_matches(struct Contact contacts[],
+                 int count,
+                 char search_data[],
+                 int matched_indexes[])
+{
+    /* Stores total matching contacts found */
+    int match_count = 0;
+
+    /* Check every contact in the contact list */
+    for(int i = 0; i < count; i++)
+    {
+        /*
+           strstr() returns a non-NULL address
+           if search_data is found inside
+           name, phone or email.
+        */
+        if(strstr(contacts[i].name, search_data) ||
+           strstr(contacts[i].phone, search_data) ||
+           strstr(contacts[i].email, search_data))
+        {
+            /* Store matching contact index */
+            matched_indexes[match_count] = i;
+
+            /* Increase total matches found */
+            match_count++;
+        }
+    }
+
+    /* Return total matching contacts */
+    return match_count;
+}
 void edit_contact(struct Contact contacts[], int count)
 {
     /* Check whether any contacts exist */
@@ -169,45 +206,28 @@ void edit_contact(struct Contact contacts[], int count)
     /* Stores search text entered by user */
     char search_data[50];
 
-    /* Stores indexes of matching contacts */
-    int matched_indexes[MAX_CONTACTS];
+   /* Stores indexes of matching contacts */
+   int matched_indexes[MAX_CONTACTS];
 
-    /* Total matching contacts found */
-    int match_count = 0;
+   /* Total matching contacts found */
+   int match_count = 0;
 
-    /* Accept search text from user */
-    printf("Enter Name / Phone / Email to Edit: ");
-    scanf(" %[^\n]", search_data);
+   /* Accept search text from user */
+   printf("Enter Name / Phone / Email to Edit: ");
+   scanf(" %[^\n]", search_data);
 
-    /*
-       Search all contacts.
-
-       If search text is found in name,
-       phone or email, store that contact's
-       array index in matched_indexes[].
-    */
-    for (int i = 0; i < count; i++)
-    {
-        /*
-          Find all contacts matching the search text
-          and store their indexes for later use.*/
-        if (strstr(contacts[i].name, search_data) ||
-            strstr(contacts[i].phone, search_data) ||
-            strstr(contacts[i].email, search_data))
-        {
-            /* Store index of matching contact */
-            matched_indexes[match_count] = i;
-            /* Increase number of matches found */
-            match_count++;
-
-        }
-    }
-    /* No matching contact found */
-    if (match_count == 0)
-    {
-        printf("\nContact Not Found\n");
-        return;
-    }
+   /* Find all matching contacts */
+   match_count = find_matches(
+                contacts,
+                count,
+                search_data,
+                matched_indexes);
+                /* No matching contact found */
+                if (match_count == 0)
+                {
+                    printf("\nContact Not Found\n");
+                    return;
+                }
 
     /* Display all matching contacts */
     printf("\nMatching Contacts:\n");
@@ -220,7 +240,7 @@ void edit_contact(struct Contact contacts[], int count)
         */
         int index = matched_indexes[i];
 
-        printf("\n%d.\n", i + 1);
+        printf("\n%d.\n", i + 1);//serial number printing
 
         printf("Name   : %s\n", contacts[index].name);
         printf("Phone  : %s\n", contacts[index].phone);
@@ -384,6 +404,7 @@ else
 /* Contact updated successfully */
 printf("\nContact Updated Successfully\n");
 }
+
 /*
    Deletes a contact
 */
@@ -400,7 +421,7 @@ void delete_contact(struct Contact contacts[], int *count)
     char search_name[NAME_LEN];
 
     /* Indicates whether contact was found */
-    int found = 0;
+    int found = 0;//here 0 means not found
 
     /* Accept contact name from user */
     printf("Enter Name to Delete: ");
