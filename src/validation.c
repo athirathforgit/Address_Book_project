@@ -107,42 +107,75 @@ int validate_email(char email[])
 {
     int i;
 
-    /* Flag to check '@' symbol */
-    int at_found = 0;
+    /* Stores position of '@' symbol */
+    int at_pos = -1;
 
-    /* Flag to check '.' symbol */
-    int dot_found = 0;
+    /* Stores position of last '.' symbol */
+    int dot_pos = -1;
 
-    /* Check each character */
+    /* Counts total '@' symbols */
+    int at_count = 0;
+
+    /* Find length of email */
+    int len = strlen(email);
+
+    /* Check for empty email */
+    if(len == 0)
+    {
+        return 0;
+    }
+
+    /* Scan each character of email */
     for(i = 0; email[i] != '\0'; i++)
     {
-        /* Check for '@' */
-        if(email[i] == '@')
-        {
-            at_found = 1;
-        }
-
-        /* Check for '.' */
-        else if(email[i] == '.')
-        {
-            dot_found = 1;
-        }
-
-        /* Spaces are not allowed */
-        else if(email[i] == ' ')
+        /* Reject spaces in email */
+        if(email[i] == ' ')
         {
             return 0;
         }
+
+        /* Count '@' and store its position */
+        if(email[i] == '@')
+        {
+            at_count++;
+
+            at_pos = i;
+        }
+
+        /* Store latest '.' position */
+        if(email[i] == '.')
+        {
+            dot_pos = i;
+        }
     }
 
-    /* Email is valid only if both exist */
-    if(at_found && dot_found)
+    /* Email must contain exactly one '@' */
+    if(at_count != 1)
     {
-        return 1;
+        return 0;
     }
 
-    /* Invalid email */
-    return 0;
+    /* Check characters exist before '@' */
+    if(at_pos <= 0)
+    {
+        return 0;
+    }
+
+    /* Check '.' comes after '@'
+       and at least one character exists between them */
+    if(dot_pos < at_pos + 2)
+    {
+        return 0;
+    }
+
+    /* Check at least two characters exist after '.' */
+    if(dot_pos >= len - 2)
+    {
+        return 0;
+    }
+
+    /* Email is valid */
+    return 1;
 }
 /* 
    Checks whether phone number already exists
