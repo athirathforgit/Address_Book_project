@@ -188,15 +188,20 @@ void edit_contact(struct Contact contacts[], int count)
     */
     for (int i = 0; i < count; i++)
     {
+        /*
+          Find all contacts matching the search text
+          and store their indexes for later use.*/
         if (strstr(contacts[i].name, search_data) ||
             strstr(contacts[i].phone, search_data) ||
             strstr(contacts[i].email, search_data))
         {
+            /* Store index of matching contact */
             matched_indexes[match_count] = i;
+            /* Increase number of matches found */
             match_count++;
+
         }
     }
-
     /* No matching contact found */
     if (match_count == 0)
     {
