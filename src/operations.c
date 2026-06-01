@@ -15,134 +15,177 @@
 */
 void add_contact(struct Contact contacts[], int *count)
 {
+    /* Check whether maximum contact limit reached */
     if (*count >= MAX_CONTACTS)
     {
         printf("Contact List Full\n");
         return;
     }
-
+ 
+    /* Read and validate contact name */
     while (1)
     {
+        /* Get name from user */
         printf("Enter Name: ");
         scanf(" %[^\n]", contacts[*count].name);
-
+ 
+        /* Exit loop if name is valid */
         if (validate_name(contacts[*count].name))
             break;
-
+ 
+        /* Display error message */
         printf("Invalid Name\n");
     }
-
-   while(1)
+ 
+    /* Read and validate phone number */
+    while(1)
     {
+        /* Get phone number from user */
         printf("Enter Phone: ");
-
         scanf(" %[^\n]", contacts[*count].phone);
-
+ 
+        /* Check phone format and duplicate entry */
         if(validate_phone(contacts[*count].phone) &&
-
-        !duplicate_phone(contacts,*count,contacts[*count].phone))
+           !duplicate_phone(contacts,
+                            *count,
+                            contacts[*count].phone))
         {
             break;
         }
-
-        if(duplicate_phone(contacts,*count,contacts[*count].phone))
+ 
+        /* Check whether phone number already exists */
+        if(duplicate_phone(contacts,
+                           *count,
+                           contacts[*count].phone))
         {
             printf("Phone Number Already Exists\n");
         }
-
         else
         {
+            /* Display invalid phone message */
             printf("Invalid Phone Number\n");
         }
     }
-
+ 
+    /* Read and validate email address */
     while(1)
     {
+        /* Get email from user */
         printf("Enter Email: ");
-
         scanf(" %[^\n]", contacts[*count].email);
-
+ 
+        /* Check email format and duplicate entry */
         if(validate_email(contacts[*count].email) &&
-
-        !duplicate_email(contacts,
+           !duplicate_email(contacts,
                             *count,
                             contacts[*count].email))
         {
             break;
         }
-
+ 
+        /* Check whether email already exists */
         if(duplicate_email(contacts,
-                        *count,
-                        contacts[*count].email))
+                           *count,
+                           contacts[*count].email))
         {
             printf("Email Already Exists\n");
         }
-
         else
         {
+            /* Display invalid email message */
             printf("Invalid Email\n");
         }
     }
+ 
+    /* Increase contact count after successful insertion */
+    (*count)++;
+ 
+    /* Display success message */
+    printf("\nContact Added Successfully\n");
 }
-
 /*
    Searches for a contact
 */
 void search_contact(struct Contact contacts[], int count)
 {
+    /* Check whether contact list is empty */
     if (count == 0)
     {
         printf("\nNo Contacts Available\n");
         return;
     }
-
+ 
+    /* Variable to store search key entered by user */
     char search_data[50];
+ 
+    /* Flag variable to track whether match is found */
     int found = 0;
-
+ 
+    /* Read search input from user */
     printf("Enter Name / Phone / Email to Search: ");
     scanf(" %[^\n]", search_data);
-
+ 
+    /* Traverse through all contacts */
     for (int i = 0; i < count; i++)
     {
+        /* Check whether search text exists in
+           name, phone number or email */
         if (strstr(contacts[i].name, search_data) ||
             strstr(contacts[i].phone, search_data) ||
             strstr(contacts[i].email, search_data))
         {
+            /* Display contact found message */
             printf("\nContact Found\n");
-
+ 
+            /* Display matched contact details */
             printf("Name   : %s\n", contacts[i].name);
             printf("Phone  : %s\n", contacts[i].phone);
             printf("Email  : %s\n", contacts[i].email);
-
+ 
+            /* Update flag to indicate match found */
             found = 1;
         }
     }
-
+ 
+    /* Display message if no matching contact exists */
     if (found == 0)
     {
         printf("\nContact Not Found\n");
     }
 }
-
 /*
    Edits existing contact details
 */
+
 void edit_contact(struct Contact contacts[], int count)
 {
+    /* Check whether any contacts exist */
     if (count == 0)
     {
         printf("\nNo Contacts Available\n");
         return;
     }
 
+    /* Stores search text entered by user */
     char search_data[50];
 
+    /* Stores indexes of matching contacts */
     int matched_indexes[MAX_CONTACTS];
+
+    /* Total matching contacts found */
     int match_count = 0;
 
+    /* Accept search text from user */
     printf("Enter Name / Phone / Email to Edit: ");
     scanf(" %[^\n]", search_data);
 
+    /*
+       Search all contacts.
+
+       If search text is found in name,
+       phone or email, store that contact's
+       array index in matched_indexes[].
+    */
     for (int i = 0; i < count; i++)
     {
         if (strstr(contacts[i].name, search_data) ||
@@ -154,19 +197,26 @@ void edit_contact(struct Contact contacts[], int count)
         }
     }
 
+    /* No matching contact found */
     if (match_count == 0)
     {
         printf("\nContact Not Found\n");
         return;
     }
 
+    /* Display all matching contacts */
     printf("\nMatching Contacts:\n");
 
     for (int i = 0; i < match_count; i++)
     {
+        /*
+           Retrieve actual contact index
+           from matched_indexes array.
+        */
         int index = matched_indexes[i];
 
         printf("\n%d.\n", i + 1);
+
         printf("Name   : %s\n", contacts[index].name);
         printf("Phone  : %s\n", contacts[index].phone);
         printf("Email  : %s\n", contacts[index].email);
@@ -174,19 +224,30 @@ void edit_contact(struct Contact contacts[], int count)
 
     int choice;
 
+    /* Ask user which matching contact to edit */
     printf("\nEnter List Number to Edit: ");
     scanf("%d", &choice);
 
+    /* Validate selected list number */
     if (choice < 1 || choice > match_count)
     {
         printf("\nInvalid Choice\n");
         return;
     }
 
+    /*
+       Convert displayed serial number
+       into actual contact array index.
+
+       Example:
+       Choice = 1 -> matched_indexes[0]
+       Choice = 2 -> matched_indexes[1]
+    */
     int selected_index = matched_indexes[choice - 1];
 
     int edit_choice;
 
+    /* Display edit menu */
     printf("\nWhat Do You Want To Edit?\n");
     printf("1. Name\n");
     printf("2. Phone\n");
@@ -194,174 +255,203 @@ void edit_contact(struct Contact contacts[], int count)
     printf("4. All Details\n");
 
     printf("Enter Your Choice: ");
-    scanf("%d", &edit_choice);
+scanf("%d", &edit_choice);
 
-    if (edit_choice == 1)
+/* Edit only name */
+if(edit_choice == 1)
+{
+    printf("\nEnter New Name: ");
+    scanf(" %[^\n]", contacts[selected_index].name);
+
+    /* Validate entered name */
+    if(!validate_name(contacts[selected_index].name))
     {
-        printf("\nEnter New Name: ");
-        scanf(" %[^\n]", contacts[selected_index].name);
-
-        while (!validate_name(contacts[selected_index].name))
-        {
-            printf("Invalid Name\n");
-
-            printf("Enter New Name: ");
-            scanf(" %[^\n]", contacts[selected_index].name);
-        }
-    }
-
-    else if (edit_choice == 2)
-    {
-        printf("\nEnter New Phone: ");
-        scanf(" %[^\n]", contacts[selected_index].phone);
-
-        while (!validate_phone(contacts[selected_index].phone))
-        {
-            printf("Invalid Phone Number\n");
-
-            printf("Enter New Phone: ");
-            scanf(" %[^\n]", contacts[selected_index].phone);
-        }
-    }
-
-    else if (edit_choice == 3)
-    {
-        printf("\nEnter New Email: ");
-        scanf(" %[^\n]", contacts[selected_index].email);
-
-        while (!validate_email(contacts[selected_index].email))
-        {
-            printf("Invalid Email\n");
-
-            printf("Enter New Email: ");
-            scanf(" %[^\n]", contacts[selected_index].email);
-        }
-    }
-
-    else if (edit_choice == 4)
-    {
-        printf("\nEnter New Name: ");
-        scanf(" %[^\n]", contacts[selected_index].name);
-
-        while (!validate_name(contacts[selected_index].name))
-        {
-            printf("Invalid Name\n");
-
-            printf("Enter New Name: ");
-            scanf(" %[^\n]", contacts[selected_index].name);
-        }
-
-        printf("Enter New Phone: ");
-        scanf(" %[^\n]", contacts[selected_index].phone);
-
-    while(1)
-    {
-        if(validate_phone(contacts[selected_index].phone) &&
-
-        !duplicate_phone(contacts,
-                            count,
-                            contacts[selected_index].phone))
-        {
-            break;
-        }
-
-        if(duplicate_phone(contacts,
-                        count,
-                        contacts[selected_index].phone))
-        {
-            printf("Phone Number Already Exists\n");
-        }
-
-        else
-        {
-            printf("Invalid Phone Number\n");
-        }
-
-        printf("Enter New Phone: ");
-
-        scanf(" %[^\n]", contacts[selected_index].phone);
-    }
-
-        printf("Enter New Email: ");
-        scanf(" %[^\n]", contacts[selected_index].email);
-
-    while(1)
-    {
-        if(validate_email(contacts[selected_index].email) &&
-
-        !duplicate_email(contacts,count,contacts[selected_index].email))
-        {
-            break;
-        }
-
-        if(duplicate_email(contacts,count,contacts[selected_index].email))
-        {
-            printf("Email Already Exists\n");
-        }
-
-        else
-        {
-            printf("Invalid Email\n");
-        }
-
-        printf("Enter New Email: ");
-
-        scanf(" %[^\n]", contacts[selected_index].email);
+        printf("Invalid Name\n");
+        return;
     }
 }
 
-    else
+/* Edit only phone */
+else if(edit_choice == 2)
+{
+    printf("\nEnter New Phone: ");
+    scanf(" %[^\n]", contacts[selected_index].phone);
+
+    /* Validate phone format */
+    if(!validate_phone(contacts[selected_index].phone))
     {
-        printf("\nInvalid Edit Choice\n");
+        printf("Invalid Phone Number\n");
         return;
     }
 
-    printf("\nContact Updated Successfully\n");
+    /* Check duplicate phone */
+    if(duplicate_phone(contacts,
+                       count,
+                       contacts[selected_index].phone))
+    {
+        printf("Phone Number Already Exists\n");
+        return;
+    }
 }
 
+/* Edit only email */
+else if(edit_choice == 3)
+{
+    printf("\nEnter New Email: ");
+    scanf(" %[^\n]", contacts[selected_index].email);
+
+    /* Validate email format */
+    if(!validate_email(contacts[selected_index].email))
+    {
+        printf("Invalid Email\n");
+        return;
+    }
+
+    /* Check duplicate email */
+    if(duplicate_email(contacts,
+                       count,
+                       contacts[selected_index].email))
+    {
+        printf("Email Already Exists\n");
+        return;
+    }
+}
+/* Edit name, phone number and email address */
+else if(edit_choice == 4)
+{
+    /* Accept and validate new name */
+    printf("\nEnter New Name: ");
+    scanf(" %[^\n]", contacts[selected_index].name);
+
+    /* Stop update if entered name is invalid */
+    if(!validate_name(contacts[selected_index].name))
+    {
+        printf("Invalid Name\n");
+        return;
+    }
+
+    /* Accept new phone number */
+    printf("Enter New Phone: ");
+    scanf(" %[^\n]", contacts[selected_index].phone);
+
+    /* Check whether phone number format is valid */
+    if(!validate_phone(contacts[selected_index].phone))
+    {
+        printf("Invalid Phone Number\n");
+        return;
+    }
+
+    /* Ensure phone number is not already used */
+    if(duplicate_phone(contacts,
+                       count,
+                       contacts[selected_index].phone))
+    {
+        printf("Phone Number Already Exists\n");
+        return;
+    }
+
+    /* Accept new email address */
+    printf("Enter New Email: ");
+    scanf(" %[^\n]", contacts[selected_index].email);
+
+    /* Check whether email format is valid */
+    if(!validate_email(contacts[selected_index].email))
+    {
+        printf("Invalid Email\n");
+        return;
+    }
+
+    /* Ensure email address is unique */
+    if(duplicate_email(contacts,
+                       count,
+                       contacts[selected_index].email))
+    {
+        printf("Email Already Exists\n");
+        return;
+    }
+}
+else
+{
+    printf("\nInvalid Edit Choice\n");
+    return;
+}
+
+/* Contact updated successfully */
+printf("\nContact Updated Successfully\n");
+}
 /*
    Deletes a contact
 */
 void delete_contact(struct Contact contacts[], int *count)
 {
+    /* Check whether any contacts exist */
     if (*count == 0)
     {
         printf("\nNo Contacts Available\n");
         return;
     }
 
+    /* Stores name entered by user for deletion */
     char search_name[NAME_LEN];
 
+    /* Indicates whether contact was found */
     int found = 0;
 
+    /* Accept contact name from user */
     printf("Enter Name to Delete: ");
     scanf(" %[^\n]", search_name);
 
+    /* Validate entered name */
     if (validate_name(search_name) == 0)
     {
         printf("\nInvalid Name\n");
         return;
     }
 
+    /*
+       Search all contacts.
+
+       If matching contact is found,
+       delete it from the contact list.
+    */
     for (int i = 0; i < *count; i++)
     {
+        /* Compare entered name with contact name */
         if (strcmp(search_name, contacts[i].name) == 0)
         {
+            /* Contact found successfully */
             found = 1;
 
+            /*
+               Shift all contacts after the deleted
+               contact one position to the left.
+
+               Example:
+
+               Before:
+               [Ravi] [Muskaan] [Asha]
+
+               Delete Muskaan
+
+               After Shift:
+               [Ravi] [Asha]
+            */
             for (int k = i; k < *count - 1; k++)
             {
                 contacts[k] = contacts[k + 1];
             }
 
+            /* Reduce total contact count */
             (*count)--;
 
             printf("\nContact Deleted Successfully\n");
 
+            /* No further searching required */
             break;
         }
     }
 
+    /* Display message if contact not found */
     if (found == 0)
     {
         printf("\nContact Not Found\n");
@@ -373,34 +463,42 @@ void delete_contact(struct Contact contacts[], int *count)
 */
 void list_contacts(struct Contact contacts[], int count)
 {
+    // Check if address book is empty
     if (count == 0)
     {
         printf("\nAddress book is empty\n");
-        return;
+        return; // Exit function if no contacts exist
     }
-
+ 
+    // Print top border of table
     printf("\n+----+----------------------+---------------+------------------------------+\n");
-
+ 
+    // Print table headings
     printf("| %-2s | %-20s | %-13s | %-28s |\n",
-           "#",
-           "Name",
-           "Phone",
-           "Email");
-
+           "#",       // Serial number column
+           "Name",   // Name column
+           "Phone",  // Phone number column
+           "Email"); // Email column
+ 
+    // Print separator line
     printf("+----+----------------------+---------------+------------------------------+\n");
-
+ 
+    // Loop through all contacts
     for (int i = 0; i < count; i++)
     {
+        // Print each contact details in table format
         printf("| %-2d | %-20s | %-13s | %-28s |\n",
-               i + 1,
-               contacts[i].name,
-               contacts[i].phone,
-               contacts[i].email);
+               i + 1,                // Contact number (starts from 1)
+               contacts[i].name,    // Contact name
+               contacts[i].phone,   // Contact phone number
+               contacts[i].email);  // Contact email
     }
-
+ 
+    // Print bottom border of table
     printf("+----+----------------------+---------------+------------------------------+\n");
-
+ 
+    // Display total number of contacts stored
     printf("Total contacts: %d / %d\n",
-           count,
-           MAX_CONTACTS);
+           count,         // Current number of contacts
+           MAX_CONTACTS); // Maximum allowed contacts
 }
