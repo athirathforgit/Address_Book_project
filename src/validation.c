@@ -1,16 +1,15 @@
 /* Standard input-output functions */
-#include<stdio.h>
+#include <stdio.h>
 
 /* String handling functions */
-#include<string.h>
+#include <string.h>
 
 /* Contains validation function declarations */
-#include"validation.h"
+#include "validation.h"
 
 #include <ctype.h>
 
-
-/* 
+/*
    Validates contact name
 
    Rules:
@@ -26,16 +25,16 @@ int validate_name(char name[])
     int i;
 
     /* Check for empty string */
-    if(strlen(name) == 0)
+    if (strlen(name) == 0)
     {
         return 0;
     }
 
     /* Check each character */
-    for(i = 0; name[i] != '\0'; i++)
+    for (i = 0; name[i] != '\0'; i++)
     {
         /* Allow alphabets and spaces */
-        if(isalpha(name[i]) || name[i] == ' ')
+        if (isalpha(name[i]) || name[i] == ' ')
         {
             continue;
         }
@@ -49,8 +48,7 @@ int validate_name(char name[])
     return 1;
 }
 
-
-/* 
+/*
    Validates phone number
 
    Rules:
@@ -66,15 +64,15 @@ int validate_phone(char phone[])
     int i;
 
     /* Check phone number length */
-    if(strlen(phone) != 10)
+    if (strlen(phone) != 10)
     {
         return 0;
     }
 
     /* Check each character is digit */
-    for(i = 0; phone[i] != '\0'; i++)
+    for (i = 0; phone[i] != '\0'; i++)
     {
-        if(!isdigit(phone[i]))
+        if (!isdigit(phone[i]))
         {
             return 0;
         }
@@ -83,8 +81,7 @@ int validate_phone(char phone[])
     return 1;
 }
 
-
-/* 
+/*
    Validates email address
 
    Rules:
@@ -113,22 +110,22 @@ int validate_email(char email[])
     int len = strlen(email);
 
     /* Check for empty email */
-    if(len == 0)
+    if (len == 0)
     {
         return 0;
     }
 
     /* Scan each character of email */
-    for(i = 0; email[i] != '\0'; i++)
+    for (i = 0; email[i] != '\0'; i++)
     {
         /* Reject spaces in email */
-        if(email[i] == ' ')
+        if (email[i] == ' ')
         {
             return 0;
         }
 
         /* Count '@' and store its position */
-        if(email[i] == '@')
+        if (email[i] == '@')
         {
             at_count++;
 
@@ -136,33 +133,33 @@ int validate_email(char email[])
         }
 
         /* Store latest '.' position */
-        if(email[i] == '.')
+        if (email[i] == '.')
         {
             dot_pos = i;
         }
     }
 
     /* Email must contain exactly one '@' */
-    if(at_count != 1)
+    if (at_count != 1)
     {
         return 0;
     }
 
     /* Check characters exist before '@' */
-    if(at_pos <= 0)
+    if (at_pos <= 0)
     {
         return 0;
     }
 
     /* Check '.' comes after '@'
        and at least one character exists between them */
-    if(dot_pos < at_pos + 2)
+    if (dot_pos < at_pos + 2)
     {
         return 0;
     }
 
     /* Check at least two characters exist after '.' */
-    if(dot_pos >= len - 2)
+    if (dot_pos >= len - 2)
     {
         return 0;
     }
@@ -170,7 +167,7 @@ int validate_email(char email[])
     /* Email is valid */
     return 1;
 }
-/* 
+/*
    Checks whether phone number already exists
 
    Returns:
@@ -182,10 +179,10 @@ int duplicate_phone(struct Contact contacts[],
                     char phone[])
 {
     /* Check all existing contacts */
-    for(int i = 0; i < count; i++)
+    for (int i = 0; i < count; i++)
     {
         /* Compare phone numbers */
-        if(strcmp(contacts[i].phone, phone) == 0)
+        if (strcmp(contacts[i].phone, phone) == 0)
         {
             return 1;
         }
@@ -195,7 +192,7 @@ int duplicate_phone(struct Contact contacts[],
     return 0;
 }
 
-/* 
+/*
    Checks whether email already exists
 
    Returns:
@@ -207,10 +204,10 @@ int duplicate_email(struct Contact contacts[],
                     char email[])
 {
     /* Check all existing contacts */
-    for(int i = 0; i < count; i++)
+    for (int i = 0; i < count; i++)
     {
         /* Compare email addresses */
-        if(strcmp(contacts[i].email, email) == 0)
+        if (strcmp(contacts[i].email, email) == 0)
         {
             return 1;
         }

@@ -14,6 +14,8 @@
 /* Contains file handling function declarations */
 #include "file_handler.h"
 
+#define MSG_LENGTH 200
+
 /*
    Saves all contacts into CSV file
 
@@ -61,7 +63,7 @@ void load_contacts(struct Contact contacts[], int *count)
     FILE *fp;
 
     /* Stores each line read from file */
-    char line[200];
+    char line[MSG_LENGTH];
 
     printf("Loaded Contacts...\n");
 
@@ -104,7 +106,7 @@ void load_contacts(struct Contact contacts[], int *count)
     }
 
     /* Sort contacts alphabetically after loading */
-    
+
     /* Close file after reading */
     fclose(fp);
 }
