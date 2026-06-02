@@ -430,42 +430,36 @@ printf("\nContact Updated Successfully\n");
 void delete_contact(struct Contact contacts[], int *count)
 {
     /* Check whether any contacts exist */
-    if (*count == 0)
+    if(*count == 0)
     {
         printf("\nNo Contacts Available\n");
         return;
     }
 
-    /* Stores name entered by user */
-    char search_name[NAME_LEN];
+    /* Stores search text entered by user */
+    char search_data[50];
 
     /* Stores indexes of matching contacts */
     int matched_indexes[MAX_CONTACTS];
 
     /* Total matching contacts found */
-    int match_count;
+    int match_count = 0;
 
-    /* Accept contact name from user */
-    printf("Enter Name to Delete: ");
-    scanf(" %[^\n]", search_name);
-
-    /* Validate entered name */
-    if(validate_name(search_name) == 0)
-    {
-        printf("\nInvalid Name\n");
-        return;
-    }
+    /* Accept search text */
+    printf("Enter Name / Phone / Email to Delete: ");
+    scanf(" %[^\n]", search_data);
 
     /*
-       Search contact using helper function.
+       Search matching contacts.
 
-       Matching contact indexes are stored
+       Assumes search_contact() returns
+       number of matches and stores indexes
        inside matched_indexes[].
     */
     match_count = search_contact(
                     contacts,
                     *count,
-                    search_name,
+                    search_data,
                     matched_indexes);
 
     /* No matching contact found */
@@ -475,24 +469,57 @@ void delete_contact(struct Contact contacts[], int *count)
         return;
     }
 
-    /*
-       Retrieve actual contact index.
+    /* Display all matching contacts */
+    printf("\nMatching Contacts:\n");
 
-       For delete operation, first match
-       is selected.
-    */
-    int index = matched_indexes[0];
+    for(int i = 0; i < match_count; i++)
+    {
+        int index = matched_indexes[i];
+
+        printf("\n%d.\n", i + 1);
+        printf("Name  : %s\n", contacts[index].name);
+        printf("Phone : %s\n", contacts[index].phone);
+        printf("Email : %s\n", contacts[index].email);
+    }
+
+    /* Ask user which contact to delete */
+    int choice;
+
+    printf("\nEnter List Number to Delete: ");
+    scanf("%d", &choice);
+
+    /* Validate choice */
+    if(choice < 1 || choice > match_count)
+    {
+        printf("\nInvalid Choice\n");
+        return;
+    }
+
+    /* Get actual contact index */
+    int index = matched_indexes[choice - 1];
+
+    /* Confirmation before delete */
+    char confirm;
+
+    printf("\nAre you sure you want to delete this contact? (Y/N): ");
+    scanf(" %c", &confirm);
+
+    if(confirm != 'Y' && confirm != 'y')
+    {
+        printf("\nDeletion Cancelled\n");
+        return;
+    }
 
     /*
-       Shift all contacts after the deleted
-       contact one position to the left.
+       Shift all contacts after deleted contact
+       one position to the left
     */
     for(int k = index; k < *count - 1; k++)
     {
         contacts[k] = contacts[k + 1];
     }
 
-    /* Reduce total contact count */
+    /* Reduce contact count */
     (*count)--;
 
     printf("\nContact Deleted Successfully\n");

@@ -7,6 +7,8 @@
 /* Contains validation function declarations */
 #include"validation.h"
 
+#include <ctype.h>
+
 
 /* 
    Validates contact name
@@ -32,19 +34,11 @@ int validate_name(char name[])
     /* Check each character */
     for(i = 0; name[i] != '\0'; i++)
     {
-        /* Allow uppercase letters */
-        if((name[i] >= 'A' && name[i] <= 'Z') ||
-
-           /* Allow lowercase letters */
-           (name[i] >= 'a' && name[i] <= 'z') ||
-
-           /* Allow spaces */
-            name[i] == ' ')
+        /* Allow alphabets and spaces */
+        if(isalpha(name[i]) || name[i] == ' ')
         {
             continue;
         }
-
-        /* Invalid character found */
         else
         {
             return 0;
@@ -80,13 +74,12 @@ int validate_phone(char phone[])
     /* Check each character is digit */
     for(i = 0; phone[i] != '\0'; i++)
     {
-        if(phone[i] < '0' || phone[i] > '9')
+        if(!isdigit(phone[i]))
         {
             return 0;
         }
     }
 
-    /* Phone number is valid */
     return 1;
 }
 
