@@ -199,15 +199,10 @@ void search_contact_display(struct Contact contacts[],
     /* Display all matching contacts */
     for(int i = 0; i < match_count; i++)
     {
-        /*
-           Retrieve actual contact index
-           from matched_indexes[].
-        */
         int index = matched_indexes[i];
 
-        printf("\nContact Found\n");
+        printf("\n%d.\n", i + 1);
 
-        /* Display contact details */
         printf("Name   : %s\n", contacts[index].name);
         printf("Phone  : %s\n", contacts[index].phone);
         printf("Email  : %s\n", contacts[index].email);
