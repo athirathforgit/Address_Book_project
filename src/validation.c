@@ -191,6 +191,32 @@ int duplicate_phone(struct Contact contacts[],
     /* No duplicate found */
     return 0;
 }
+/*
+   Checks duplicate phone while editing.
+
+   Skips the contact currently being edited.
+*/
+int duplicate_phone_edit(struct Contact contacts[],
+                         int count,
+                         char phone[],
+                         int selected_index)
+{
+    for(int i = 0; i < count; i++)
+    {
+        /* Skip current contact */
+        if(i == selected_index)
+        {
+            continue;
+        }
+
+        if(strcmp(contacts[i].phone, phone) == 0)
+        {
+            return 1;
+        }
+    }
+
+    return 0;
+}
 
 /*
    Checks whether email already exists

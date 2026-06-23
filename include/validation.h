@@ -36,5 +36,9 @@ int duplicate_phone(struct Contact contacts[],
 int duplicate_email(struct Contact contacts[],
                     int count,
                     char email[]);
-
+                    
+int duplicate_phone_edit(struct Contact contacts[],
+                         int count,
+                         char phone[],
+                         int selected_index);
 #endif

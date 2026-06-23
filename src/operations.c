@@ -297,126 +297,117 @@ void edit_contact(struct Contact contacts[], int count)
     scanf("%d", &edit_choice);
 
     /* Edit only name */
-    if (edit_choice == 1)
-    {
-        printf("\nEnter New Name: ");
-        scanf(" %[^\n]", contacts[selected_index].name);
+/* Edit only name */
+if (edit_choice == 1)
+{
+    printf("\nEnter New Name: ");
+    scanf(" %[^\n]", contacts[selected_index].name);
 
-        /* Validate entered name */
-        if (!validate_name(contacts[selected_index].name))
-        {
-            printf("Invalid Name\n");
-            return;
-        }
+    if (!validate_name(contacts[selected_index].name))
+    {
+        printf("Invalid Name\n");
+        return;
     }
+}
 
-    /* Edit only phone */
-    else if (edit_choice == 2)
+/* Edit only phone */
+else if (edit_choice == 2)
+{
+    printf("\nEnter New Phone: ");
+    scanf(" %[^\n]", contacts[selected_index].phone);
+
+    if (!validate_phone(contacts[selected_index].phone))
     {
-        printf("\nEnter New Phone: ");
-        scanf(" %[^\n]", contacts[selected_index].phone);
-
-        /* Validate phone format */
-        if (!validate_phone(contacts[selected_index].phone))
-        {
-            printf("Invalid Phone Number\n");
-            return;
-        }
-
-        /* Check duplicate phone */
-        if (duplicate_phone(contacts,
-                            count,
-                            contacts[selected_index].phone))
-        {
-            printf("Phone Number Already Exists\n");
-            return;
-        }
-    }
-
-    /* Edit only email */
-    else if (edit_choice == 3)
-    {
-        printf("\nEnter New Email: ");
-        scanf(" %[^\n]", contacts[selected_index].email);
-
-        /* Validate email format */
-        if (!validate_email(contacts[selected_index].email))
-        {
-            printf("Invalid Email\n");
-            return;
-        }
-
-        /* Check duplicate email */
-        if (duplicate_email(contacts,
-                            count,
-                            contacts[selected_index].email))
-        {
-            printf("Email Already Exists\n");
-            return;
-        }
-    }
-    /* Edit name, phone number and email address */
-    else if (edit_choice == 4)
-    {
-        /* Accept and validate new name */
-        printf("\nEnter New Name: ");
-        scanf(" %[^\n]", contacts[selected_index].name);
-
-        /* Stop update if entered name is invalid */
-        if (!validate_name(contacts[selected_index].name))
-        {
-            printf("Invalid Name\n");
-            return;
-        }
-
-        /* Accept new phone number */
-        printf("Enter New Phone: ");
-        scanf(" %[^\n]", contacts[selected_index].phone);
-
-        /* Check whether phone number format is valid */
-        if (!validate_phone(contacts[selected_index].phone))
-        {
-            printf("Invalid Phone Number\n");
-            return;
-        }
-
-        /* Ensure phone number is not already used */
-        if (duplicate_phone(contacts,
-                            count,
-                            contacts[selected_index].phone))
-        {
-            printf("Phone Number Already Exists\n");
-            return;
-        }
-
-        /* Accept new email address */
-        printf("Enter New Email: ");
-        scanf(" %[^\n]", contacts[selected_index].email);
-
-        /* Check whether email format is valid */
-        if (!validate_email(contacts[selected_index].email))
-        {
-            printf("Invalid Email\n");
-            return;
-        }
-
-        /* Ensure email address is unique */
-        if (duplicate_email(contacts,
-                            count,
-                            contacts[selected_index].email))
-        {
-            printf("Email Already Exists\n");
-            return;
-        }
-    }
-    else
-    {
-        printf("\nInvalid Edit Choice\n");
+        printf("Invalid Phone Number\n");
         return;
     }
 
-    /* Contact updated successfully */
-    printf("\nContact Updated Successfully\n");
+    if (duplicate_phone_edit(contacts,
+                             count,
+                             contacts[selected_index].phone,
+                             selected_index))
+    {
+        printf("Phone Number Already Exists\n");
+        return;
+    }
+}
+
+/* Edit only email */
+else if (edit_choice == 3)
+{
+    printf("\nEnter New Email: ");
+    scanf(" %[^\n]", contacts[selected_index].email);
+
+    if (!validate_email(contacts[selected_index].email))
+    {
+        printf("Invalid Email\n");
+        return;
+    }
+
+    if (duplicate_email(contacts,
+                        count,
+                        contacts[selected_index].email))
+    {
+        printf("Email Already Exists\n");
+        return;
+    }
+}
+
+/* Edit all details */
+else if (edit_choice == 4)
+{
+    printf("\nEnter New Name: ");
+    scanf(" %[^\n]", contacts[selected_index].name);
+
+    if (!validate_name(contacts[selected_index].name))
+    {
+        printf("Invalid Name\n");
+        return;
+    }
+
+    printf("Enter New Phone: ");
+    scanf(" %[^\n]", contacts[selected_index].phone);
+
+    if (!validate_phone(contacts[selected_index].phone))
+    {
+        printf("Invalid Phone Number\n");
+        return;
+    }
+
+    if (duplicate_phone_edit(contacts,
+                             count,
+                             contacts[selected_index].phone,
+                             selected_index))
+    {
+        printf("Phone Number Already Exists\n");
+        return;
+    }
+
+    printf("Enter New Email: ");
+    scanf(" %[^\n]", contacts[selected_index].email);
+
+    if (!validate_email(contacts[selected_index].email))
+    {
+        printf("Invalid Email\n");
+        return;
+    }
+
+    if (duplicate_email(contacts,
+                        count,
+                        contacts[selected_index].email))
+    {
+        printf("Email Already Exists\n");
+        return;
+    }
+}
+else
+{
+    printf("\nInvalid Edit Choice\n");
+    return;
+}
+
+/* Contact updated successfully */
+printf("\nContact Updated Successfully\n");
 }
 
 /*
